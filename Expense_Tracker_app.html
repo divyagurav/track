@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker app</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="col col-md-6">
+                    <form onsubmit="saveToLocalStroarage(event)">
+                        <label for="Expenceamount"> Choose Expenceamount:</label>
+                        <input type="number" class="form-control" id="amount" name="amount">
+                        <label for="Description"> Choose Description:</label>
+                        <input type="text" class="form-control" id="description" name="description">
+                        <label for="category"> Choose a Category:</label>
+                        <select class="form-select" id="category" name="category">
+                            <option>fuel</option>
+                            <option>food</option>
+                            <option>electricity</option>
+                        </select>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Add Expense</button>
+                    </form>
+                    <ul id="listofitems"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+    <script>
+        function saveToLocalStroarage(event) {
+            event.preventDefault();
+
+            const amount = event.target.amount.value;
+            const description = event.target.description.value;
+            const category = event.target.category.value;
+
+            const obj = { amount, description, category };
+            localStorage.setItem(obj.description, JSON.stringify(obj));
+            dispalyOnScreen(obj);
+
+        }
+        function dispalyOnScreen(obj) {
+            let parent = document.getElementById('listofitems');
+            let child = document.createElement('li');
+            child.textContent = `${obj.amount}-${obj.description}-${obj.category}`
+
+            let deletebtn = document.createElement('input');
+            deletebtn.type = 'button';
+            deletebtn.value = 'Delete';
+
+            deletebtn.onclick = () => {
+                localStorage.removeItem(obj.description);
+                parent.removeChild(child);
+
+            }
+
+
+            let editbtn = document.createElement('input');
+            editbtn.type = "button";
+            editbtn.value = "Edit";
+
+            editbtn.onclick = () => {
+                localStorage.removeItem(obj.description);
+                parent.removeChild(child);
+
+                document.getElementById('amount').value = obj.amount;
+                document.getElementById('description').value = obj.description;
+                document.getElementById('category').value = obj.category;
+
+            }
+
+            child.appendChild(deletebtn);
+            child.appendChild(editbtn);
+            parent.appendChild(child);
+
+
+        }
+
+
+
+    </script>
+</body>
+
+</html>
